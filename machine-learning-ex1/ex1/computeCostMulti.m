@@ -13,9 +13,11 @@ J = 0;
 % Instructions: Compute the cost of a particular choice of theta
 %               You should set J to the cost.
 
+% Solution from 1 feature case
+% J = sum(((X * theta) - y) .^ 2) / (2 * m);
 
-
-
+% Formula presented in exercise PDF (either option works fine)
+J = (1 ./ (2 .* m)) .* (X * theta - y)' * (X * theta - y);
 
 % =========================================================================
 

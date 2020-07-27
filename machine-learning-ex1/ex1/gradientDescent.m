@@ -17,11 +17,12 @@ for iter = 1:num_iters
     %       of the cost function (computeCost) and gradient here.
     %
 
+    errors = X * theta - y;
+    grad = (alpha / m) .* sum(errors .* X)';
 
+    theta = theta - grad;
 
-
-
-
+    % fprintf('cost is %f\n', computeCost(X, y, theta))
 
     % ============================================================
 

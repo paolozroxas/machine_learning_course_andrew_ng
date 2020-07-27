@@ -17,15 +17,15 @@ for iter = 1:num_iters
     %       of the cost function (computeCostMulti) and gradient here.
     %
 
+    errors = X * theta - y;
 
+    % This works
+    % grad = (alpha / m) .* sum(errors .* X)';
+    
+    % But this is cleaner. They are equivalent.
+    grad = ((alpha/m) * X'*errors);
 
-
-
-
-
-
-
-
+    theta = theta - grad;
 
     % ============================================================
 
