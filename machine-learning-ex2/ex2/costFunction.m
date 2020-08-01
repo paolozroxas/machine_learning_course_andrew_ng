@@ -20,12 +20,13 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
+predictions = sigmoid(X * theta);
 
+% Cost function
+J = 1/m .* (-y' * log(predictions) + (y' - 1) * log(1 - predictions));
 
-
-
-
-
+% Gradient
+grad = 1/m .* (X' * (predictions - y));
 
 % =============================================================
 
