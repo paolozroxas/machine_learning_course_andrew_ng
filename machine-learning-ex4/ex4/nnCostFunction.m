@@ -64,7 +64,7 @@ Theta2_grad = zeros(size(Theta2));
 
 % Converts ineger labels to arrays of size 10, where there is a single 1 whose position
 % denotes the integer, and the rest of the array is zeros
-Labels = eye(10)(y, :);
+Labels = eye(num_labels)(y, :);
 
 % Add ones to input to form the biases
 Inputs = [ones(m, 1), X];
@@ -78,23 +78,12 @@ Outputs = sigmoid(A2 * Theta2');
 % Applies the cost function using the labels and outputs.
 % Note the double sum. One of the sums is over neurons, another is over examples
 % The order of which sum dimension is applied first doesn't matter.
-J = (1/m) * sum(sum(-Labels .* log(Outputs) - (1 - Labels) .* log(1 - Outputs)));
+cost = (1/m) * sum(sum(-Labels .* log(Outputs) - (1 - Labels) .* log(1 - Outputs)));
 
+% Here we sum over all the theta values squared
+regularizationTerm = (lambda/(2*m)) * (sum(sum(Theta1 .^ 2)) + sum(sum(Theta2 .^ 2)));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+J = cost + regularizationTerm;
 
 % -------------------------------------------------------------
 
