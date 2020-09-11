@@ -81,7 +81,9 @@ Outputs = sigmoid(A2 * Theta2');
 cost = (1/m) * sum(sum(-Labels .* log(Outputs) - (1 - Labels) .* log(1 - Outputs)));
 
 % Here we sum over all the theta values squared
-regularizationTerm = (lambda/(2*m)) * (sum(sum(Theta1 .^ 2)) + sum(sum(Theta2 .^ 2)));
+Theta1NonBias = Theta1(:, 2:end);
+Theta2NonBias = Theta2(:, 2:end);
+regularizationTerm = (lambda/(2*m)) * (sum(sum(Theta1NonBias .^ 2)) + sum(sum(Theta2NonBias .^ 2)));
 
 J = cost + regularizationTerm;
 
