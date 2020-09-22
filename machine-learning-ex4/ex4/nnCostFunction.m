@@ -62,6 +62,12 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% USEFUL VARIABLES
+Theta1ExBias = Theta1(:, 2:end);
+Theta2ExBias = Theta2(:, 2:end);
+
+% FEED FORWARD
+
 % Converts ineger labels to arrays of size 10, where there is a single 1 whose position
 % denotes the integer, and the rest of the array is zeros
 Labels = eye(num_labels)(y, :);
@@ -69,23 +75,44 @@ Labels = eye(num_labels)(y, :);
 % Add ones to input to form the biases
 Inputs = [ones(m, 1), X];
 
-% This is a (numberOfExamples x numberOfNeuronsInLayer1) matrix, representing activations of layer 2
-A2 = [ones(m, 1), sigmoid(Inputs * Theta1')];
+% This is a (numberOfExamples x numberOfNeuronsInLayer2) matrix, representing activations of layer 2
+Z2 = Inputs * Theta1';
+A2 = [ones(m, 1), sigmoid(Z2)];
 
 % This is a (numberOfExamples x numberOfNeuronsInOutputLayer) matrix
 Outputs = sigmoid(A2 * Theta2');
+
+
+% COST CALCULATION
 
 % Applies the cost function using the labels and outputs.
 % Note the double sum. One of the sums is over neurons, another is over examples
 % The order of which sum dimension is applied first doesn't matter.
 cost = (1/m) * sum(sum(-Labels .* log(Outputs) - (1 - Labels) .* log(1 - Outputs)));
 
+% REGULARIZED COST
+
 % Here we sum over all the theta values squared
-Theta1NonBias = Theta1(:, 2:end);
-Theta2NonBias = Theta2(:, 2:end);
-regularizationTerm = (lambda/(2*m)) * (sum(sum(Theta1NonBias .^ 2)) + sum(sum(Theta2NonBias .^ 2)));
+regularizationTerm = (lambda/(2*m)) * (sum(sum(Theta1ExBias .^ 2)) + sum(sum(Theta2ExBias .^ 2)));
 
 J = cost + regularizationTerm;
+
+
+% GRADIENT
+% Link to tutorial: https://www.coursera.org/learn/machine-learning/discussions/all/threads/a8Kce_WxEeS16yIACyoj1Q
+delta3 = Outputs - Labels;
+delta2 = (delta3 * Theta2ExBias) .* sigmoidGradient(Z2);
+
+Delta2 = delta3' * A2;
+Delta1 = delta2' * Inputs;
+
+Theta1GradWithoutRegularization = (1/m) * Delta1;
+Theta2GradWithoutRegularization = (1/m) * Delta2;
+
+% REGULARIZED GRADIENT
+
+Theta1_grad = Theta1GradWithoutRegularization + (lambda/m) * [zeros(hidden_layer_size, 1), Theta1ExBias];
+Theta2_grad = Theta2GradWithoutRegularization + (lambda/m) * [zeros(num_labels, 1), Theta2ExBias];
 
 % -------------------------------------------------------------
 
