@@ -52,7 +52,26 @@ error_val   = zeros(m, 1);
 %
 
 % ---------------------- Sample Solution ----------------------
+% Notes:
+% - Using the entire cross validation set suggests that we're evaluating
+% Adding TRAINING examples. Keep that in mind.
+% - Why are we setting lambda to zero? Maybe it doesn't matter since we're just
+% doing a comparison? It just matters that we're preventing a high variance problem
+% when training?
 
+
+for numberOfTrainingExamples = 1:m
+    XSubset = X(1:numberOfTrainingExamples, :);
+    ySubset = y(1:numberOfTrainingExamples);
+    [theta] = trainLinearReg(XSubset, ySubset, lambda);
+
+    [trainingCost] = linearRegCostFunction(XSubset, ySubset, theta, 0); % set lambda to 0 when evaluating cost
+    
+    [crossValCost] = linearRegCostFunction(Xval, yval, theta, 0); % set lambda to 0 when evaluating cost
+    
+    error_train(numberOfTrainingExamples) = trainingCost;
+    error_val(numberOfTrainingExamples) = crossValCost;
+end
 
 
 

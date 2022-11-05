@@ -164,7 +164,7 @@ pause;
 %  lambda to see how the fit and learning curve change.
 %
 
-lambda = 0;
+lambda = 1;
 [theta] = trainLinearReg(X_poly, y, lambda);
 
 % Plot training data and fit
@@ -218,3 +218,13 @@ end
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
+
+
+%% =========== Part 9: Using chosen parameters on test data =============
+% Train linear regression model on test data with a lambda of 3
+[theta] = trainLinearReg(X_poly, y, 3)
+% N.B. Computing the cost with lambda does not produce the correct result.
+% We need to set lambda to 0 when computing cost.
+[test_error] = linearRegCostFunction(X_poly_test, ytest, theta, 0);
+fprintf(['Cost for test data: %f '...
+         '\n(this value should be about 3.8599)\n'], test_error);

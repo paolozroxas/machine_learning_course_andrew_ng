@@ -39,11 +39,15 @@ error_val = zeros(length(lambda_vec), 1);
 %
 %
 
-
-
-
-
-
+for lambdaIdx = 1:length(lambda_vec)
+    [theta] = trainLinearReg(X, y, lambda_vec(lambdaIdx));
+    % N.B. Computing the cost with lambda does not produce the correct result.
+    % We need to set lambda to 0 when computing cost.
+    [trainingCost] = linearRegCostFunction(X, y, theta, 0);
+    [crossValCost] = linearRegCostFunction(Xval, yval, theta, 0);
+    error_train(lambdaIdx) = trainingCost;
+    error_val(lambdaIdx) = crossValCost;
+end
 
 
 

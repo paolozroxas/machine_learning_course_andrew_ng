@@ -15,9 +15,15 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
+% Create a matrix that looks like:
+%  1   2   3   4   5
+%  1   2   3   4   5
+%  1   2   3   4   5
+% Where rows are the number of elements in X
+% and columns are the polynomial degree.
+powers = repmat(1:p, numel(X), 1);
 
-
-
+X_poly = X .^ powers;
 
 
 % =========================================================================
